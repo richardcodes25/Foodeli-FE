@@ -10,6 +10,11 @@ import { FoodCatalogueModule } from './food-catalogue/food-catalogue.module';
 import { OrderSummaryModule } from './order-summary/order-summary.module';
 import {  HomeModule } from './home/home.module';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../environment/environment';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -22,7 +27,11 @@ import {  HomeModule } from './home/home.module';
     HttpClientModule,
     FoodCatalogueModule,
     OrderSummaryModule,
-    HomeModule
+    HomeModule,
+
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

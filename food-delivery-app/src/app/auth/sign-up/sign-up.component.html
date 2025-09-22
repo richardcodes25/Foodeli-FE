@@ -1,0 +1,8 @@
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="displayName" placeholder="Display name">
+  <input formControlName="email" type="email" placeholder="Email">
+  <input formControlName="password" type="password" placeholder="Password">
+  <button type="submit" [disabled]="form.invalid || loading">Create account</button>
+  <p *ngIf="error">{{error}}</p>
+</form>
