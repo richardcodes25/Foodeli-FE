@@ -1,6 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
+// ✅ Angular default env folder is "environments"
+const outPath = path.join(__dirname, "../src/environment/environment.prod.ts");
+const outDir = path.dirname(outPath);
+
+// ✅ make sure folder exists on Vercel
+fs.mkdirSync(outDir, { recursive: true });
+
 const envFile = `
 export const environment = {
   production: true,
@@ -16,9 +23,9 @@ export const environment = {
 };
 `;
 
-fs.writeFileSync(
-  path.join(__dirname, "../src/environment/environment.prod.ts"),
-  envFile
-);
+// fs.writeFileSync(
+//   path.join(__dirname, "../src/environment/environment.prod.ts"),
+//   envFile
+// );
 
 console.log("✅ environment.prod.ts generated");
