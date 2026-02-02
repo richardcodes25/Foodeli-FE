@@ -17,7 +17,7 @@ export const environment = {
 `;
 
 fs.writeFileSync(
-  path.join(__dirname, "../src/environments/environment.prod.ts"),
+  path.join(__dirname, "../src/environment/environment.prod.ts"),
   envFile
 );
 
