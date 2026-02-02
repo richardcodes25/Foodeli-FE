@@ -23,9 +23,9 @@ export const environment = {
 };
 `;
 
-// fs.writeFileSync(
-//   path.join(__dirname, "../src/environment/environment.prod.ts"),
-//   envFile
-// );
+fs.writeFileSync(
+  path.join(__dirname, "../src/environment/environment.prod.ts"),
+  envFile
+);
 
 console.log("✅ environment.prod.ts generated");
