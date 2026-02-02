@@ -1,0 +1,82 @@
+<section class="auth">
+  <!-- animated background -->
+  <div class="auth__bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="auth__card" [class.is-loading]="loading">
+    <header class="auth__header">
+      <div class="auth__badge">Foodeli</div>
+      <h1 class="auth__title">Create your account</h1>
+      <p class="auth__subtitle">Join and start ordering your favorites ✨</p>
+    </header>
+
+    <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="field">
+        <span class="field__label">Display name</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✦</span>
+          <input
+            class="field__input"
+            formControlName="displayName"
+            type="text"
+            placeholder="Your name"
+            autocomplete="name"
+          />
+        </div>
+      </label>
+
+      <label class="field">
+        <span class="field__label">Email</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✷</span>
+          <input
+            class="field__input"
+            formControlName="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+      </label>
+
+      <label class="field">
+        <span class="field__label">Password</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✸</span>
+          <input
+            class="field__input"
+            formControlName="password"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+        </div>
+      </label>
+
+      <!-- helper row -->
+      <div class="auth__row">
+        <a class="link link--small" routerLink="/login" (click)="backToLogin()">
+          Already have an account? <span class="link__strong">Log in</span>
+        </a>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="form.invalid || loading">
+        <span class="btn__text">{{ loading ? 'Creating…' : 'Create account' }}</span>
+        <span class="btn__shine" aria-hidden="true"></span>
+      </button>
+
+      <!-- feedback -->
+      <p class="auth__success" *ngIf="success" role="status">
+        {{ success }}
+      </p>
+
+      <p class="auth__error" *ngIf="error" role="alert">
+        {{ error }}
+      </p>
+    </form>
+  </div>
+</section>

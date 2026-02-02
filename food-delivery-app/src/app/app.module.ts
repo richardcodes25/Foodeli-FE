@@ -10,10 +10,15 @@ import { FoodCatalogueModule } from './food-catalogue/food-catalogue.module';
 import { OrderSummaryModule } from './order-summary/order-summary.module';
 import {  HomeModule } from './home/home.module';
 
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+// import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+// import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environment/environment';
+
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
 
 @NgModule({
   declarations: [
@@ -28,12 +33,17 @@ import { environment } from '../environment/environment';
     FoodCatalogueModule,
     OrderSummaryModule,
     HomeModule,
-
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
   ],
-  providers: [],
+  providers: [
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+    // AngularFireModule.initializeApp(environment.firebase),
+    // AngularFireAuthModule,
+    // AngularFirestoreModule,

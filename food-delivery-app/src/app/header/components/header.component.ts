@@ -7,12 +7,16 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  username = 'Iris';
   isLoggedIn = false;
 
   constructor(private router: Router) { }
 
   toggleHome() {
     this.router.navigate(['']);
+  }
+
+  toggleAuth() {
+    console.log('Navigating to sign-in page');
+    this.router.navigate(['/auth/login']);
   }
 }

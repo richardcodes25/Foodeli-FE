@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap');
 
-.header {
+/* .header {
   background-color: #A0E4F1;
   color: #fff;
   padding: 10px 0;
   width: 100%;
+  height: 50px;
+
+  margin-bottom: 10px;
 }
 
 .header-container {
@@ -12,9 +15,8 @@
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 40px);
-  /* max-width: 1200px; */
-  /* margin: 0 auto; */
   padding: 0 20px;
+  height: 100%;
 }
 
 .header-logo {
@@ -102,4 +104,332 @@
 
 .sign-in-button {
   border: 1px solid black;
+}
+ */
+
+ /* ===============================
+   Header – Foodeli Glass Theme
+   =============================== */
+
+.fx-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  height: 50px;
+  padding: 10px 16px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.10),
+      rgba(255, 255, 255, 0.04)
+    ),
+    rgba(7, 10, 26, 0.35);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+}
+
+/* soft gradient top border */
+.fx-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.55),
+    rgba(34, 211, 238, 0.55),
+    rgba(251, 113, 133, 0.50),
+    transparent
+  );
+  opacity: 0.45;
+}
+
+/* subtle ambient glow */
+.fx-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    800px 80px at 50% 0%,
+    rgba(34, 211, 238, 0.10),
+    transparent 60%
+  );
+}
+
+/* inner container */
+.fx-header__inner {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+/* =====================
+   Brand
+   ===================== */
+
+.fx-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  height: 100%;
+  padding: 4px 8px;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 14px;
+  position: relative;
+
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.fx-brand:hover {
+  background: rgba(255, 255, 255, 0.10);
+  transform: translateY(-1px);
+}
+
+.fx-brand:active {
+  transform: translateY(0);
+}
+
+.fx-brand__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(248, 250, 252, 0.18);
+}
+
+.fx-brand__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fx-brand__text {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--color-text-primary);
+  line-height: 1;
+  position: relative;
+}
+
+.fx-brand__text::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 6px;
+  width: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  border-radius: 999px;
+  transition: width 220ms ease;
+  opacity: 0.9;
+}
+
+.fx-brand:hover .fx-brand__text::after {
+  width: 100%;
+}
+
+/* =====================
+   Navigation
+   ===================== */
+
+.fx-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* =====================
+   Logged-in User
+   ===================== */
+
+.fx-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 4px 8px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(248, 250, 252, 0.18);
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.fx-user__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(248, 250, 252, 0.18);
+}
+
+.fx-user__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* online indicator */
+.fx-user__dot {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(7, 10, 26, 0.9),
+    0 0 14px rgba(34, 211, 238, 0.35);
+}
+
+.fx-user__meta {
+  display: grid;
+  line-height: 1.1;
+}
+
+.fx-user__hello {
+  font-size: 11px;
+  color: rgba(248, 250, 252, 0.85);
+}
+
+.fx-user__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* =====================
+   Auth Button
+   ===================== */
+
+.fx-btn {
+  border: none;
+  cursor: pointer;
+
+  padding: 6px 12px;
+  border-radius: 12px;
+
+  background: var(--button-bg);
+  color: var(--button-text);
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  box-shadow: var(--shadow-glow);
+  position: relative;
+  overflow: hidden;
+
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.fx-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+
+.fx-btn:active {
+  transform: translateY(0);
+}
+
+.fx-btn__text {
+  position: relative;
+  z-index: 2;
+}
+
+.fx-btn__shine {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: translateX(-60%) rotate(18deg);
+  animation: fxShine 2.6s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+/* =====================
+   Animations
+   ===================== */
+
+@keyframes fxShine {
+  0% {
+    transform: translateX(-70%) rotate(18deg);
+    opacity: 0;
+  }
+  20% { opacity: 0.85; }
+  55% {
+    transform: translateX(70%) rotate(18deg);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translateX(70%) rotate(18deg);
+    opacity: 0;
+  }
+}
+
+/* =====================
+   Mobile
+   ===================== */
+
+@media (max-width: 520px) {
+  .fx-user__meta {
+    display: none;
+  }
+}
+
+/* =====================
+   Reduced Motion
+   ===================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-btn__shine {
+    animation: none !important;
+  }
+
+  .fx-brand,
+  .fx-btn {
+    transition: none !important;
+  }
 }

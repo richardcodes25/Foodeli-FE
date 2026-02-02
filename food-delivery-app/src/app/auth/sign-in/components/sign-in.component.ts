@@ -1,7 +1,7 @@
 // sign-in.component.ts
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -18,7 +18,8 @@ export class SignInComponent {
   private router = inject(Router);
 
   loading = false;
-  error = '';
+  success: string | null = null;
+  error: string | null = null;
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -27,7 +28,10 @@ export class SignInComponent {
 
   async submit() {
     if (this.form.invalid) return;
-    this.loading = true; this.error = '';
+
+    this.loading = true;
+    this.error = '';
+
     try {
       const { email, password } = this.form.value;
       await this.auth.signInEmail(email!, password!);
@@ -37,6 +41,10 @@ export class SignInComponent {
     } finally {
       this.loading = false;
     }
+  }
+
+  gotoAccountPage() {
+    this.router.navigateByUrl('/auth/register');
   }
 
   async logout() {

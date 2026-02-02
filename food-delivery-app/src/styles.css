@@ -1,4 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  /* Brand */
+  --color-primary: #8b5cf6;   /* purple */
+  --color-secondary: #22d3ee; /* cyan */
+  --color-accent: #fb7185;    /* pink */
+
+  /* Background / surface */
+  --color-bg: #070a1a;
+  --color-surface: rgba(255, 255, 255, 0.10);
+  --border-soft: rgba(255, 255, 255, 0.18);
+
+  /* Text */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: rgba(248, 250, 252, 0.78);
+
+  /* Button */
+  --button-bg: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --button-text: #ffffff;
+  --shadow-glow: 0 18px 45px rgba(34, 211, 238, 0.30);
+}
+
+
 body {
   margin: 0;
   background-color: #F1FAFB;

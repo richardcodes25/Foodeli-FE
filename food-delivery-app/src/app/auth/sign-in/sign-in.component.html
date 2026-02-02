@@ -1,8 +1,0 @@
-
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <input formControlName="email" type="email" placeholder="Email">
-  <input formControlName="password" type="password" placeholder="Password">
-  <button type="submit" [disabled]="form.invalid || loading">Log in</button>
-  <p *ngIf="error">{{error}}</p>
-</form>
-<button (click)="logout()">Log out</button>

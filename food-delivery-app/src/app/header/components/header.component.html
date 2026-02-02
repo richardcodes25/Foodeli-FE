@@ -1,6 +1,6 @@
 <!-- <p>header works!</p> -->
 
-<header class="header">
+<!-- <header class="header">
   <div class="header-container">
       <div class="ava">
         <img src="../../../assets/avatar-pics/icon.png" alt="User Avatar" />
@@ -9,16 +9,57 @@
       <nav class="header-nav">
         <div *ngIf="isLoggedIn; else elseBlock" class="user-avatar">
           <img src="../../../assets/avatar-pics/avatar.jpg" alt="User Avatar" />
-          <!-- Binding username from userInfo Database (call from header.component.ts) -->
-          <span class="username">Hey {{ username }}</span>
+          <span class="username">Welcome Back!</span>
         </div>
 
         <ng-template #elseBlock>
-          <button class="custom-button">
+          <button class="custom-button" (click)="toggleAuth()">
             Log In / Sign Up
           </button>
         </ng-template>
       </nav>
   </div>
-</header>
+</header> -->
 
+<header class="fx-header">
+  <div class="fx-header__inner">
+    <!-- Left: Brand -->
+    <button class="fx-brand" type="button" (click)="toggleHome()">
+      <span class="fx-brand__icon">
+        <img src="../../../assets/avatar-pics/icon.png" alt="Foodeli" />
+      </span>
+      <span class="fx-brand__text">Foodeli</span>
+      <span class="fx-brand__glow" aria-hidden="true"></span>
+    </button>
+
+    <!-- Right: Nav -->
+    <nav class="fx-nav">
+      <ng-container *ngIf="isLoggedIn; else loggedOut">
+        <div class="fx-user">
+          <div class="fx-user__avatar">
+            <img src="../../../assets/avatar-pics/avatar.jpg" alt="User Avatar" />
+            <span class="fx-user__dot" aria-hidden="true"></span>
+          </div>
+
+          <div class="fx-user__meta">
+            <span class="fx-user__hello">Welcome back</span>
+            <span class="fx-user__name">!</span>
+            <!-- If you have username later:
+            <span class="fx-user__name">{{ username }}</span>
+            -->
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #loggedOut>
+        <button class="fx-btn" type="button" (click)="toggleAuth()">
+          <span class="fx-btn__text">Log In / Sign Up</span>
+          <span class="fx-btn__shine" aria-hidden="true"></span>
+        </button>
+      </ng-template>
+    </nav>
+  </div>
+
+  <!-- subtle animated highlight -->
+  <div class="fx-header__shine" aria-hidden="true"></div>
+</header>

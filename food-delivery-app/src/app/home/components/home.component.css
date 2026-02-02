@@ -1,0 +1,261 @@
+.home-page {
+  /* ✅ FIXED HEIGHT (viewport - header) */
+  min-height: calc(100vh - 165px);
+  height: calc(100vh - 165px);
+
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+
+  border-radius: 10px;
+}
+/* Animated gradient wash */
+.bg-animated {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 180deg,
+    rgba(139, 92, 246, 0.35),
+    rgba(34, 211, 238, 0.35),
+    rgba(251, 113, 133, 0.35),
+    rgba(139, 92, 246, 0.35)
+  );
+  filter: blur(60px);
+  animation: swirl 10s linear infinite;
+  opacity: 0.9;
+}
+
+/* Floating blobs */
+.blob {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  filter: blur(30px);
+  opacity: 0.45;
+  animation: floaty 8s ease-in-out infinite;
+}
+
+.blob-1 {
+  background: radial-gradient(circle at 30% 30%, var(--color-primary), transparent 60%);
+  top: -120px;
+  left: -120px;
+}
+
+.blob-2 {
+  background: radial-gradient(circle at 60% 40%, var(--color-secondary), transparent 60%);
+  bottom: -160px;
+  right: -140px;
+  animation-delay: -2s;
+}
+
+.blob-3 {
+  background: radial-gradient(circle at 40% 60%, var(--color-accent), transparent 60%);
+  top: 20%;
+  right: 10%;
+  width: 320px;
+  height: 320px;
+  animation-delay: -4s;
+}
+
+/* Card */
+.hero-card {
+  position: relative;
+  z-index: 2;
+  width: min(720px, 92vw);
+  padding: 3rem 3.25rem;
+  border-radius: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(16px);
+  text-align: center;
+
+  animation: popIn 0.9s ease-out;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 1.2rem;
+  color: var(--color-text-primary);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.35),
+    rgba(34, 211, 238, 0.25)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  animation: pulseGlow 2.2s ease-in-out infinite;
+}
+
+.hero-card h1 {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  margin: 0 0 0.9rem 0;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.hero-card h1 span {
+  background: linear-gradient(
+    135deg,
+    #22d3ee,   /* bright cyan */
+    #60a5fa,   /* sky blue */
+    #a78bfa    /* soft purple */
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+
+  /* 👀 readability glow */
+  text-shadow:
+    0 0 12px rgba(34, 211, 238, 0.55),
+    0 0 24px rgba(167, 139, 250, 0.45);
+}
+
+
+.hero-card p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin: 0 0 2.2rem 0;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main button */
+.custom-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-weight: 700;
+  font-size: 1.05rem;
+  transform: translateZ(0);
+
+  box-shadow: var(--shadow-glow);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-button:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.08);
+  box-shadow: 0 22px 55px rgba(139, 92, 246, 0.35), 0 18px 45px rgba(34, 211, 238, 0.28);
+}
+
+.custom-button:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Shine sweep */
+.custom-button .shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 40%,
+    transparent 80%
+  );
+  transform: translateX(-120%);
+  animation: shine 2.7s ease-in-out infinite;
+}
+
+/* Secondary button */
+.ghost-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--color-text-primary);
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.ghost-button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(34, 211, 238, 0.45);
+}
+
+/* Sparkles */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(34, 211, 238, 0.35) 0 2px, transparent 3px) 10% 20% / 180px 180px,
+    radial-gradient(circle, rgba(139, 92, 246, 0.35) 0 2px, transparent 3px) 70% 30% / 220px 220px,
+    radial-gradient(circle, rgba(251, 113, 133, 0.35) 0 2px, transparent 3px) 40% 80% / 200px 200px;
+  opacity: 0.7;
+  animation: sparkleMove 6s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes swirl {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  50%      { transform: translateY(-22px) translateX(14px) scale(1.03); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shine {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translateX(120%); opacity: 0.6; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(34, 211, 238, 0.0); }
+  50%      { box-shadow: 0 0 30px rgba(34, 211, 238, 0.22); }
+}
+
+@keyframes sparkleMove {
+  0%, 100% { transform: translateY(0); opacity: 0.65; }
+  50%      { transform: translateY(-10px); opacity: 0.85; }
+}
+
+/* Respect reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .bg-animated, .blob, .hero-card, .badge, .sparkles, .custom-button .shine, .hero-card h1 span {
+    animation: none !important;
+  }
+  .custom-button, .ghost-button {
+    transition: none !important;
+  }
+}

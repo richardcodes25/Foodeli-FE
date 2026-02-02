@@ -1,0 +1,75 @@
+<section class="auth">
+  <div class="auth__bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="auth__card" [class.is-loading]="loading">
+    <header class="auth__header">
+      <div class="auth__badge">Foodeli</div>
+      <h1 class="auth__title">Welcome back</h1>
+      <p class="auth__subtitle">Sign in to continue your journey 🍜</p>
+    </header>
+
+    <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="field">
+        <span class="field__label">Email</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✦</span>
+          <input
+            class="field__input"
+            formControlName="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+      </label>
+
+      <label class="field">
+        <span class="field__label">Password</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✷</span>
+          <input
+            class="field__input"
+            formControlName="password"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+        </div>
+      </label>
+
+      <!-- helper row -->
+      <div class="auth__row">
+        <a class="link link--small" routerLink="/forgot-password">
+          Forgot password?
+        </a>
+
+        <a class="link link--small" routerLink="/auth/signup" (click)="gotoAccountPage()">
+          Create account
+        </a>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="form.invalid || loading">
+        <span class="btn__text">{{ loading ? 'Signing in…' : 'Log in' }}</span>
+        <span class="btn__shine" aria-hidden="true"></span>
+      </button>
+
+      <!-- Success / Error feedback -->
+      <p class="auth__success" *ngIf="success" role="status">
+        {{ success }}
+      </p>
+
+      <p class="auth__error" *ngIf="error" role="alert">
+        {{ error }}
+      </p>
+    </form>
+
+    <div class="auth__footer">
+      <button class="link" type="button" (click)="logout()">Log out</button>
+    </div>
+  </div>
+</section>
