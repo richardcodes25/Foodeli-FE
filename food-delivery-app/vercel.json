@@ -1,6 +1,6 @@
 {
   "outputDirectory": "dist/food-delivery-app/browser",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
