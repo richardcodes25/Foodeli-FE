@@ -6,6 +6,7 @@
     "start": "ng serve",
     "prebuild": "node scripts/generate-env.js",
     "build": "npx ng build",
+    "postbuild": "node -e \"const fs=require('fs'); const p1='dist/food-delivery-app/index.html'; const p2='dist/food-delivery-app/browser/index.html'; console.log('index.html at root?', fs.existsSync(p1)); console.log('index.html in browser?', fs.existsSync(p2));\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
