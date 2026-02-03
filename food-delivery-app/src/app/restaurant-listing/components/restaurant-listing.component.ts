@@ -47,6 +47,8 @@ export class RestaurantListingComponent implements OnInit {
     //Add 'implements OnInit' to the class.
     this.getAllRestaurants();
     this.titleService.setTitle('Foodeli | Restaurants');
+
+    console.log("Restaurant fetched: ", this.restaurantList);
   }
 
   // Call on ngOnInit

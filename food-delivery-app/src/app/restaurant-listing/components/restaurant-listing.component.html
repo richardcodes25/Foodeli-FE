@@ -1,9 +1,9 @@
 <!-- <p>restaurant-listing works!</p> -->
 
-<div *ngIf="loading" class="loading">Loading restaurants…</div>
+<!-- <div *ngIf="loading" class="loading">Loading restaurants…</div> -->
 
 <!-- Show server-down UI when serverError is true -->
-<ng-container *ngIf="serverError; else normalContent">
+<!-- <ng-container *ngIf="serverError; else normalContent">
   <section class="server-down">
     <img src="/assets/errors/server-error.png" alt="Server Down" class="server-down-image">
     <h2>We can’t reach the server</h2>
@@ -11,15 +11,14 @@
     <p *ngIf="errorMessage">Details: {{ errorMessage }}</p>
     <button (click)="retry()" class="custom-button try-again-button">Try again</button>
   </section>
-</ng-container>
+</ng-container> -->
 
-<ng-template class="main-content my-gap" #normalContent>
+<!-- <ng-template class="main-content my-gap" #normalContent>
   <section *ngIf="!loading && !serverError">
     <h1>Restaurant List</h1>
     <div class="restaurant-grid">
       <div class="restaurant-card" *ngFor="let restaurant of restaurantList">
         <div class="restaurant-image">
-          <!-- Get random displaying image from assets folder -->
           <img [src]="'/assets/restaurant-pics/' + getRandomImage()" alt="Restaurant Image">
         </div>
 
@@ -30,10 +29,116 @@
             <span class="rating-count">(500+)</span>
           </div>
 
-          <!-- When clicking, forward to this restaurant's food catalogue page -->
           <button class="order-btn" (click)="onOrderNowClick(restaurant.id)">View Menu</button>
         </div>
       </div>
     </div>
   </section>
-</ng-template>
+</ng-template> -->
+
+<section class="rl">
+  <!-- Background (same vibe as auth pages) -->
+  <div class="rl__bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="rl__container">
+
+    <!-- Loading (more impressive) -->
+    <ng-container *ngIf="loading; else content">
+      <div class="rl-loading">
+        <div class="rl-loading__spinner" aria-hidden="true"></div>
+        <div class="rl-loading__text">
+          <h2>Finding the best spots near you…</h2>
+          <p>Loading restaurants</p>
+          <div class="rl-loading__dots" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- skeleton grid -->
+        <div class="rl-skeleton">
+          <div class="sk-card" *ngFor="let _ of [1,2,3,4,5,6,7,8]">
+            <div class="sk-img shimmer"></div>
+            <div class="sk-body">
+              <div class="sk-line shimmer w-80"></div>
+              <div class="sk-line shimmer w-55"></div>
+              <div class="sk-pill shimmer w-40"></div>
+              <div class="sk-btn shimmer w-60"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #content>
+      <!-- Server down -->
+      <ng-container *ngIf="serverError; else normalContent">
+        <section class="rl-panel">
+          <img
+            src="/assets/errors/server-error.png"
+            alt="Server Down"
+            class="rl-panel__img"
+          />
+          <h2 class="rl-panel__title">We can’t reach the server</h2>
+          <p class="rl-panel__desc">
+            Our server may be restarting or temporarily unavailable. Please try again
+            or retry in the next 30 minutes.
+          </p>
+
+          <p class="rl-panel__details" *ngIf="errorMessage">
+            Details: {{ errorMessage }}
+          </p>
+
+          <button (click)="retry()" class="rl-btn">
+            <span class="rl-btn__text">Try again</span>
+            <span class="rl-btn__shine" aria-hidden="true"></span>
+          </button>
+        </section>
+      </ng-container>
+
+      <!-- Normal content -->
+      <ng-template #normalContent>
+        <section class="rl-section">
+          <div class="rl-head">
+            <h1 class="rl-title">Restaurant List</h1>
+            <p class="rl-subtitle">Pick a place and explore the menu 🍽️</p>
+          </div>
+
+          <div class="restaurant-grid">
+            <div class="restaurant-card" *ngFor="let restaurant of restaurantList">
+              <div class="restaurant-image">
+                <img
+                  [src]="'/assets/restaurant-pics/' + getRandomImage()"
+                  alt="Restaurant Image"
+                />
+                <div class="restaurant-image__overlay" aria-hidden="true"></div>
+              </div>
+
+              <div class="restaurant-details">
+                <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+
+                <div class="restaurant-rating">
+                  <span class="rating">
+                    <i class="fa fa-star"></i>
+                    4.5
+                  </span>
+                  <span class="rating-count">(500+)</span>
+                </div>
+
+                <button class="order-btn" (click)="onOrderNowClick(restaurant.id)">
+                  <span>View Menu</span>
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ng-template>
+    </ng-template>
+
+  </div>
+</section>
