@@ -101,6 +101,7 @@ export class RestaurantListingComponent implements OnInit {
   }
 
   onOrderNowClick(id: number) {
+    console.log('Order Now clicked for restaurant ID:', id);
     this.router.navigate(['/food-catalogue', id]);
     // this.router.navigate(`${'/food-catalogue/' + id}`);
   }

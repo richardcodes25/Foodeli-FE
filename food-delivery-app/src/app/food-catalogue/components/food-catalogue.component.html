@@ -1,6 +1,6 @@
 <!-- <p>food-catalogue works!</p> -->
 
-<div class="restaurant-details">
+<!-- <div class="restaurant-details">
   <div class="restaurant-header">
       <h1>{{ foodItemResponse?.restaurant?.name }}</h1>
       <button class="checkout-button" (click)="onCheckOut()">
@@ -12,22 +12,169 @@
 
   <h2>Food Menu</h2>
   <div class="food-list">
-      <!-- Menu/list of food (FoodItem) of a restaurant -->
+
       <div class="food-item" *ngFor="let food of foodItemResponse?.foodItemsList">
           <div class="food-details">
-            <!-- Details of the dish -->
+
               <div class="food-name">{{food.itemName}}</div>
               <div class="food-price">&#36; {{food.price}}</div>
           </div>
           <div class="food-quantity">
-            <!-- Only display - button if visitor chose this dish (if food.quantity > 0) -->
+
               <button class="minus-button" *ngIf="food.quantity > 0" (click)="decrement(food)">&#45;</button>
-              <!-- Display number of chosen for this dish -->
+
               <div class="quantity-label">{{food.quantity}}</div>
-              <!-- Increase number of chosen for this dish (food) by 1 -->
+
               <button class="plus-button" (click)="increment(food)">&#43;</button>
           </div>
       </div>
   </div>
 
-</div>
+</div> -->
+
+<!-- food-catalogue.component.html -->
+
+<section class="fc">
+  <!-- Background (same theme as signin/signup/restaurant listing) -->
+  <div class="fc__bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="fc__container">
+    <!-- Main glass card -->
+    <div class="fc-card">
+
+      <!-- =========================
+           RESTAURANT SECTION
+           (separate loading)
+           ========================= -->
+
+      <ng-container *ngIf="loadingRestaurant; else restaurantLoaded">
+        <!-- Restaurant skeleton -->
+        <div class="fc-skeleton fc-skeleton--restaurant">
+          <div class="sk-top">
+            <div class="sk-title shimmer w-55"></div>
+            <div class="sk-btn shimmer w-30"></div>
+          </div>
+          <div class="sk-par shimmer w-80"></div>
+          <div class="sk-par shimmer w-70"></div>
+        </div>
+      </ng-container>
+
+      <ng-template #restaurantLoaded>
+        <!-- Restaurant header -->
+        <div class="fc-head">
+          <div class="fc-head__title">
+            <h1 class="fc-title">
+              {{ foodItemResponse?.restaurant?.name || 'Restaurant' }}
+            </h1>
+
+            <p class="fc-desc" *ngIf="foodItemResponse?.restaurant?.restaurantDescription; else noDesc">
+              {{ foodItemResponse?.restaurant?.restaurantDescription }}
+            </p>
+
+            <ng-template #noDesc>
+              <p class="fc-desc">Explore the menu and build your order ✨</p>
+            </ng-template>
+
+            <!-- Restaurant error (separate) -->
+            <p class="fc-error" *ngIf="serverErrorRestaurant">
+              {{ errorMessageRestaurant }}
+            </p>
+          </div>
+
+          <!-- Checkout button (still visible even if food list loading) -->
+          <button class="fc-btn" (click)="onCheckOut()">
+            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+            <span class="fc-btn__text">Checkout</span>
+            <span class="fc-btn__shine" aria-hidden="true"></span>
+          </button>
+        </div>
+      </ng-template>
+
+      <div class="fc-divider"></div>
+
+      <!-- =========================
+           FOOD ITEMS SECTION
+           (separate loading)
+           ========================= -->
+
+      <div class="fc-menu-head">
+        <h2 class="fc-subtitle">Food Menu</h2>
+      </div>
+
+      <ng-container *ngIf="loadingFoodItems; else foodLoaded">
+        <!-- Food list skeleton -->
+        <div class="fc-skeleton fc-skeleton--food">
+          <div class="sk-section shimmer w-35"></div>
+
+          <div class="sk-list">
+            <div class="sk-row" *ngFor="let _ of [1,2,3,4,5,6,7,8]">
+              <div class="sk-row__left">
+                <div class="sk-line shimmer w-60"></div>
+                <div class="sk-line shimmer w-30"></div>
+              </div>
+              <div class="sk-row__right">
+                <div class="sk-pill shimmer w-70"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Food items error (separate) -->
+          <p class="fc-error" *ngIf="serverErrorFoodItems">
+            {{ errorMessageFoodItems }}
+          </p>
+        </div>
+      </ng-container>
+
+      <ng-template #foodLoaded>
+        <!-- Food items error (separate) -->
+        <p class="fc-error" *ngIf="serverErrorFoodItems">
+          {{ errorMessageFoodItems }}
+        </p>
+
+        <!-- Empty state (optional) -->
+        <p class="fc-empty" *ngIf="!serverErrorFoodItems && (foodItemResponse?.foodItemsList?.length ?? 0) === 0">
+          No items available right now. Please check back soon.
+        </p>
+
+        <!-- Actual food list -->
+        <div class="food-list" *ngIf="(foodItemResponse?.foodItemsList?.length ?? 0) > 0">
+          <div class="food-item" *ngFor="let food of foodItemResponse?.foodItemsList">
+            <div class="food-details">
+              <div class="food-name">{{ food.itemName }}</div>
+              <div class="food-price">&#36; {{ food.price }}</div>
+            </div>
+
+            <div class="food-quantity">
+              <button
+                class="qty-btn qty-btn--minus"
+                *ngIf="food.quantity > 0"
+                (click)="decrement(food)"
+                aria-label="Decrease quantity"
+              >
+                &#45;
+              </button>
+
+              <div class="quantity-label" aria-label="Selected quantity">
+                {{ food.quantity }}
+              </div>
+
+              <button
+                class="qty-btn qty-btn--plus"
+                (click)="increment(food)"
+                aria-label="Increase quantity"
+              >
+                &#43;
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</section>

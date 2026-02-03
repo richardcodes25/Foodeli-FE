@@ -1,4 +1,4 @@
-.restaurant-details {
+/* .restaurant-details {
   text-align: center;
   margin: 20px auto;
   max-width: 800px;
@@ -97,12 +97,490 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+} */
+
+/* ===============================
+   Food Catalogue – Foodeli Theme
+   =============================== */
+
+.fc {
+  min-height: calc(100vh - 50px); /* header is 50px */
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(139, 92, 246, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 85% 35%, rgba(34, 211, 238, 0.14), transparent 55%),
+    radial-gradient(900px 600px at 50% 95%, rgba(251, 113, 133, 0.10), transparent 55%),
+    var(--color-bg);
+  padding: 22px 16px 34px;
 }
 
+.fc__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
 
+.blob {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.75;
+  transform: translate3d(0,0,0);
+  animation: floaty 10s ease-in-out infinite;
+}
 
+.blob--1 {
+  left: -160px;
+  top: -180px;
+  background: radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.9), rgba(139, 92, 246, 0.0) 60%);
+}
 
+.blob--2 {
+  right: -180px;
+  top: 30px;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.9), rgba(34, 211, 238, 0.0) 60%);
+  animation-delay: -2.5s;
+}
 
+.blob--3 {
+  left: 18%;
+  bottom: -280px;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle at 30% 30%, rgba(251, 113, 133, 0.75), rgba(251, 113, 133, 0.0) 60%);
+  animation-delay: -5s;
+}
 
+.grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(to right, rgba(248, 250, 252, 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(248, 250, 252, 0.10) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 30%, rgba(0,0,0,1), rgba(0,0,0,0) 70%);
+}
 
+.fc__container {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+}
 
+/* ===============================
+   Card container
+   =============================== */
+
+.fc-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  padding: 18px 18px 12px;
+  position: relative;
+  animation: cardIn 700ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.fc-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.55),
+    rgba(34, 211, 238, 0.45),
+    rgba(251, 113, 133, 0.45)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Header row */
+.fc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.fc-title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.fc-desc {
+  margin: 8px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 70ch;
+}
+
+/* Divider */
+.fc-divider {
+  height: 1px;
+  margin: 14px 0 12px;
+  background: rgba(248, 250, 252, 0.12);
+}
+
+.fc-subtitle {
+  margin: 0 0 10px;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+
+/* Checkout button */
+.fc-btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 11px 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: var(--button-bg);
+  color: var(--button-text);
+  box-shadow: var(--shadow-glow);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.fc-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.fc-btn:active {
+  transform: translateY(0);
+}
+
+.fc-btn__text {
+  position: relative;
+  z-index: 2;
+}
+
+.fc-btn__shine {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: translateX(-60%) rotate(18deg);
+  animation: shine 2.6s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+/* ===============================
+   Food list rows
+   =============================== */
+
+.food-list {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 6px;
+}
+
+.food-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 12px 12px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(248, 250, 252, 0.14);
+
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.food-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(248, 250, 252, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.food-details {
+  display: grid;
+  gap: 6px;
+}
+
+.food-name {
+  color: var(--color-text-primary);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.food-price {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+/* quantity controls */
+.food-quantity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(248, 250, 252, 0.14);
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(248, 250, 252, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.qty-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.10);
+}
+
+.qty-btn:active {
+  transform: translateY(0);
+}
+
+.quantity-label {
+  min-width: 22px;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* ===============================
+   Loading (spinner + skeleton)
+   =============================== */
+
+.fc-loading {
+  display: grid;
+  gap: 16px;
+}
+
+.fc-loading__spinner {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  margin: 12px 0 0;
+  background:
+    conic-gradient(
+      from 180deg,
+      rgba(34, 211, 238, 0.95),
+      rgba(139, 92, 246, 0.95),
+      rgba(251, 113, 133, 0.95),
+      rgba(34, 211, 238, 0.95)
+    );
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 60%);
+  mask: radial-gradient(circle, transparent 58%, #000 60%);
+  animation: spin 0.9s linear infinite;
+  filter: drop-shadow(0 14px 30px rgba(34, 211, 238, 0.18));
+}
+
+.fc-loading__text h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.fc-loading__text p {
+  margin: 6px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.fc-loading__dots {
+  display: inline-flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.fc-loading__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.65);
+  animation: bounce 1.1s ease-in-out infinite;
+}
+
+.fc-loading__dots span:nth-child(2) { animation-delay: 0.15s; }
+.fc-loading__dots span:nth-child(3) { animation-delay: 0.30s; }
+
+/* Skeleton wrapper */
+.fc-skeleton {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.40);
+  padding: 16px 16px 18px;
+}
+
+.sk-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sk-title, .sk-btn, .sk-par, .sk-section, .sk-line, .sk-pill {
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  height: 12px;
+}
+
+.sk-btn { height: 36px; border-radius: 14px; }
+.sk-par { height: 12px; }
+.sk-section { height: 16px; margin: 14px 0 8px; border-radius: 10px; }
+
+.sk-list {
+  display: grid;
+  gap: 10px;
+}
+
+.sk-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(248, 250, 252, 0.12);
+}
+
+.sk-row__left {
+  display: grid;
+  gap: 8px;
+  width: 60%;
+}
+
+.sk-row__right {
+  display: grid;
+  align-content: center;
+  width: 34%;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transform: translateX(-60%) rotate(16deg);
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* width helpers */
+.w-80 { width: 80%; }
+.w-70 { width: 70%; }
+.w-60 { width: 60%; }
+.w-55 { width: 55%; }
+.w-35 { width: 35%; }
+.w-30 { width: 30%; }
+
+/* ===============================
+   Responsive
+   =============================== */
+
+@media (max-width: 720px) {
+  .fc-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .fc-loading__spinner,
+  .fc-loading__dots span,
+  .shimmer::after,
+  .fc-btn__shine {
+    animation: none !important;
+  }
+}
+
+/* ===============================
+   Animations
+   =============================== */
+
+@keyframes cardIn {
+  0% { opacity: 0; transform: translateY(12px) scale(0.99); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); }
+  50% { transform: translate3d(0, -18px, 0) scale(1.03); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-65%) rotate(18deg); opacity: 0.0; }
+  20% { opacity: 0.9; }
+  50% { transform: translateX(65%) rotate(18deg); opacity: 0.7; }
+  100% { transform: translateX(65%) rotate(18deg); opacity: 0.0; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-65%) rotate(16deg); opacity: 0.0; }
+  20% { opacity: 0.95; }
+  55% { transform: translateX(65%) rotate(16deg); opacity: 0.55; }
+  100% { transform: translateX(65%) rotate(16deg); opacity: 0.0; }
+}

@@ -15,10 +15,17 @@ export class RestaurantService {
   constructor(private http: HttpClient) { }
 
   getAllRestaurants() : Observable<any> {
-    return this.http.get<any>(`${this.apiURL}`) // Call HTTP get method
+    return this.http.get<any>(`${API_URL_RL}/restaurant/fetchAllRestaurants`) // Call HTTP get method
       .pipe(
         catchError(this.handleError)
       )
+  }
+
+  getRestaurantById(id: number): Observable<any> {
+    return this.http.get<any>(`${API_URL_RL}/restaurant/fetchById/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: any) {

@@ -5,6 +5,11 @@ import { FoodCatalogue } from '../../shared/models/FoodCatalogue';
 import { FoodItem } from '../../shared/models/FoodItem';
 import { Title } from '@angular/platform-browser';
 
+import { HttpErrorResponse } from '@angular/common/http';
+import { TimeoutError, throwError, of } from 'rxjs';
+import { catchError, finalize, timeout } from 'rxjs/operators';
+import { RestaurantService } from '../../restaurant-listing/service/restaurant.service';
+
 @Component({
   selector: 'app-food-catalogue',
   templateUrl: './food-catalogue.component.html',
@@ -25,17 +30,41 @@ export class FoodCatalogueComponent {
    */
 
   restaurantId: number;
-  foodItemResponse: FoodCatalogue;
+  foodItemResponse: FoodCatalogue = {
+    foodItemsList: [],
+    restaurant: null
+  };
+
   // List of all dishes we added to the cart (chosen dishes)
   foodItemCart: FoodItem[] = [];
   orderSummary: FoodCatalogue;
+
+  loading = false;
+  serverError = false; // <- use this in your HTML
+  errorMessage = ''; // optional: show details
+
+  loadingRestaurant = false;
+  loadingFoodItems = false;
+
+  serverErrorRestaurant = false;
+  serverErrorFoodItems = false;
+
+  errorMessageRestaurant = '';
+  errorMessageFoodItems = '';
+
 
   // Inject Food Item Service Layer
   // router: to router to Order service page (Order Summary page)
   // route: fetch ID from activatedRoute =>Whoever call you, you will be using the activated route,
   //   which is going to provide you information from where you have been getting routed
   //   Use to get id from function of onOrderNowClicked(): this.router.navigate(['/food-catalogue', id]);
-  constructor(private foodItemService: FooditemService, private router:Router, private route: ActivatedRoute, private titleService: Title) { }
+  constructor(
+    private foodItemService: FooditemService,
+    private restaurantService: RestaurantService,
+    private router:Router,
+    private route: ActivatedRoute,
+    private titleService: Title
+  ) { }
 
   // Therer are 2 tasks to do: get ID and get all restaurant and foodItem list using this service
   ngOnInit(): void {
@@ -48,21 +77,87 @@ export class FoodCatalogueComponent {
       // Since type of params.get('id') is string | null => adding if else to make sure that type of it is not null
       //  (type string | null can not assign to type string) => paramID not null => convert to integer (+paramID)
       const paramID = params.get('id');
-      if (paramID != null) {
-        this.restaurantId = +paramID;
-      }
+      if (!paramID) return;
+
+      // if (paramID != null) {
+      //   this.restaurantId = +paramID;
+      // }
+
+      this.restaurantId = +paramID;
+      // console.log("Fetched restaurant ID from route: ", this.restaurantId);
     });
 
     this.getFoodItemsFromRestaurantID(this.restaurantId);
+    this.getRestaurantByRestaurantID(this.restaurantId);
   }
 
   getFoodItemsFromRestaurantID(restaurantId: number) {
-    this.foodItemService.getFoodItemsByRestaurantId(this.restaurantId).subscribe(
-      data => {
-        // console.log("Getting restaurant and food item list by restaurant ID successful", data);
-        this.foodItemResponse = data;
+    this.loadingFoodItems = true;
+    this.serverErrorFoodItems = false;
+    this.errorMessageFoodItems = '';
+
+    // console.log("Fetching food items for restaurant ID: ", restaurantId);
+
+    this.foodItemService.getFoodItemsByRestaurantId(restaurantId)
+      .pipe(
+        timeout(5000),
+        catchError((err: unknown) => {
+          const http = err as HttpErrorResponse;
+          const isTimeout = err instanceof TimeoutError || (err as any)?.name === 'TimeoutError';
+          const isServerDown =
+            isTimeout || http?.status === 0 || (http?.status >= 500 && http?.status < 600);
+
+          this.serverErrorFoodItems = true;
+          if (isServerDown) {                     // <- toggle the flag
+            this.errorMessageFoodItems = isTimeout ? 'Request timed out.' :
+            http?.message || 'Network/Server error.';
+            return [];
+          }
+
+          return throwError(() => err);
+        }),
+        finalize(() => this.loadingFoodItems = false)
+      ).subscribe((data) => {
+        // console.log("Getting restaurant and food item list by restaurant ID successful", data.foodItemsList);
+        this.foodItemResponse.foodItemsList = data.foodItemsList;
+        // console.log("Food Item Response after fetching restaurant", this.foodItemResponse);
       }
-    )
+    );
+  }
+
+  getRestaurantByRestaurantID(restaurantId: number) {
+    this.loadingRestaurant = true;
+    this.serverErrorRestaurant = false;
+    this.errorMessageRestaurant = '';
+
+    this.restaurantService.getRestaurantById(restaurantId)
+      .pipe(
+        timeout(5000),
+        catchError((err: unknown) => {
+          const http = err as HttpErrorResponse;
+          const isTimeout = err instanceof TimeoutError || (err as any)?.name === 'TimeoutError';
+          const isServerDown =
+            isTimeout || http?.status === 0 || (http?.status >= 500 && http?.status < 600);
+
+          if (isServerDown) {
+            this.serverErrorRestaurant = true;
+            this.errorMessageRestaurant = isTimeout
+              ? 'Restaurant request timed out.'
+              : (http?.message || 'Network/Server error while loading restaurant.');
+
+            // ✅ fallback observable
+            return of({ data: null } as any);
+          }
+
+          return throwError(() => err);
+        }),
+        finalize(() => (this.loadingRestaurant = false))
+      )
+      .subscribe((data) => {
+        // console.log("Getting restaurant details by restaurant ID successful", data.data);
+        this.foodItemResponse.restaurant = data.data;
+        // console.log("Food Item Response after fetching restaurant", this.foodItemResponse);
+      });
   }
 
   onCheckOut() {
