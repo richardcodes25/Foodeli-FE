@@ -6,7 +6,6 @@
     "start": "ng serve",
     "prebuild": "node scripts/generate-env.js",
     "build": "npx ng build",
-    "postbuild": "node -e \"const {execSync}=require('child_process'); console.log('=== CWD ==='); console.log(process.cwd()); console.log('=== TOP LEVEL ==='); console.log(execSync('ls -la').toString()); console.log('=== FIND index.html ==='); console.log(execSync('find . -name index.html -print').toString() || '(none)'); console.log('=== FIND dist folders ==='); console.log(execSync('find . -type d -name dist -print').toString() || '(none)');\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
