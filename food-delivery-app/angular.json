@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/food-delivery-app/browser",
+            "outputPath": "dist/food-delivery-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
