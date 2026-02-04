@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TimeoutError, throwError, of } from 'rxjs';
 import { catchError, finalize, timeout } from 'rxjs/operators';
 import { RestaurantService } from '../../restaurant-listing/service/restaurant.service';
+import { CartSelectionService } from '../../services/cart-selection/cart-selection.service';
 
 @Component({
   selector: 'app-food-catalogue',
@@ -61,6 +62,7 @@ export class FoodCatalogueComponent {
   constructor(
     private foodItemService: FooditemService,
     private restaurantService: RestaurantService,
+    private cartSelectionService: CartSelectionService,
     private router:Router,
     private route: ActivatedRoute,
     private titleService: Title
@@ -119,7 +121,15 @@ export class FoodCatalogueComponent {
         finalize(() => this.loadingFoodItems = false)
       ).subscribe((data) => {
         // console.log("Getting restaurant and food item list by restaurant ID successful", data.foodItemsList);
-        this.foodItemResponse.foodItemsList = data.foodItemsList;
+        // this.foodItemResponse.foodItemsList = data.foodItemsList;
+          const map = this.cartSelectionService.load(this.restaurantId);
+
+          this.foodItemResponse.foodItemsList = (data.foodItemsList ?? []).map((f: any) => ({
+            ...f,
+            selectedQty: map[f.id] ?? 0
+          }));
+
+          this.rebuildCartFromSelections();
         // console.log("Food Item Response after fetching restaurant", this.foodItemResponse);
       }
     );
@@ -173,37 +183,42 @@ export class FoodCatalogueComponent {
 
     this.orderSummary.foodItemsList = this.foodItemCart;
     if (this.foodItemResponse.restaurant != null) this.orderSummary.restaurant = this.foodItemResponse.restaurant;
-    // console.log(JSON.stringify(this.orderSummary));
+    console.log("The Order to checkout", JSON.stringify(this.orderSummary));
     this.router.navigate(['/orderSummary'], { queryParams: { data: JSON.stringify(this.orderSummary) } });
   }
 
+  clearCart() {
+    this.cartSelectionService.clear(this.restaurantId);
+
+    this.foodItemResponse?.foodItemsList?.forEach((f: any) => (f.selectedQty = 0));
+    this.foodItemCart = [];
+  }
+
+
   increment(food: any) {
-    console.log(this.foodItemCart);
-    food.quantity++;
-    const index = this.foodItemCart.findIndex(item => item.id === food.id);
-    // Check if the cart is empty?
-    if (index === -1) {
-      // If the record does not exist, add it to the array
-      this.foodItemCart.push(food);
-    } else {
-      // If the record exist, update it in the array
-      this.foodItemCart[index] = food;
-    }
+    food.selectedQty = (food.selectedQty ?? 0) + 1;
+
+    this.cartSelectionService.setQty(this.restaurantId, food.id, food.selectedQty);
+    this.rebuildCartFromSelections();
   }
 
   decrement(food: any) {
-    console.log(this.foodItemCart);
-    if (food.quantity > 0) {
-      food.quantity --; // Each food a FoodItem interface
+    food.selectedQty = Math.max(0, (food.selectedQty ?? 0) - 1);
 
-      const index = this.foodItemCart.findIndex(item => item.id === food.item);
-      if (this.foodItemCart[index].quantity == 0) {
-        this.foodItemCart.splice(index, 1);
-      } else {
-        // Of the record exist, update it in the array
-        // Update the existing food item in the cart's quantity
-        this.foodItemCart[index] = food;
-      }
-    }
+    this.cartSelectionService.setQty(this.restaurantId, food.id, food.selectedQty);
+    this.rebuildCartFromSelections();
   }
+
+  private rebuildCartFromSelections() {
+    const items = this.foodItemResponse?.foodItemsList ?? [];
+
+    this.foodItemCart = items
+      .filter((f: any) => (f.selectedQty ?? 0) > 0)
+      .map((f: any) => ({
+        ...f,
+        quantity: f.selectedQty // checkout expects `quantity` as chosen amount
+      }));
+  }
+
+
 }

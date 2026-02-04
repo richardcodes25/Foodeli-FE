@@ -70,4 +70,12 @@ export class OrderSummaryComponent {
     this.router.navigate(['/']); // Back to home page
   }
 
+  goBackToMenu() {
+    const restaurantId = this.obj?.restaurant?.id;
+    if (!restaurantId) return;
+
+    this.router.navigate(['/food-catalogue', restaurantId]);
+  }
+
+
 }

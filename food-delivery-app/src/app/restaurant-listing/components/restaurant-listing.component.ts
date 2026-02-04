@@ -48,7 +48,7 @@ export class RestaurantListingComponent implements OnInit {
     this.getAllRestaurants();
     this.titleService.setTitle('Foodeli | Restaurants');
 
-    console.log("Restaurant fetched: ", this.restaurantList);
+    // console.log("Restaurant fetched: ", this.restaurantList);
   }
 
   // Call on ngOnInit
@@ -101,7 +101,7 @@ export class RestaurantListingComponent implements OnInit {
   }
 
   onOrderNowClick(id: number) {
-    console.log('Order Now clicked for restaurant ID:', id);
+    // console.log('Order Now clicked for restaurant ID:', id);
     this.router.navigate(['/food-catalogue', id]);
     // this.router.navigate(`${'/food-catalogue/' + id}`);
   }

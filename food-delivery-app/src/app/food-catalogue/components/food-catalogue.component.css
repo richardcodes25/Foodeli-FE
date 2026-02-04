@@ -113,6 +113,8 @@
     radial-gradient(900px 600px at 50% 95%, rgba(251, 113, 133, 0.10), transparent 55%),
     var(--color-bg);
   padding: 22px 16px 34px;
+
+  border-radius: 10px;
 }
 
 .fc__bg {
@@ -583,4 +585,23 @@
   20% { opacity: 0.95; }
   55% { transform: translateX(65%) rotate(16deg); opacity: 0.55; }
   100% { transform: translateX(65%) rotate(16deg); opacity: 0.0; }
+}
+
+.fc-actions {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ghost button */
+.fc-btn--ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(248, 250, 252, 0.16);
+  box-shadow: none;
+}
+
+.fc-btn--ghost:hover {
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.10);
+  filter: none;
 }

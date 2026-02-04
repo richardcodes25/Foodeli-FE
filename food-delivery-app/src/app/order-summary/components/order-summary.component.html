@@ -1,6 +1,4 @@
-<!-- <p>order-summary works!</p> -->
-
-<div class="order-summary">
+<!-- <div class="order-summary">
   <div>
     <h1>Order Summary</h1>
   </div>
@@ -29,7 +27,6 @@
   <button class="checkout-button" [disabled]="obj.foodItemsList?.length === 0" (click)="saveOrder()">Place Order</button>
 </div>
 
-<!-- When placing order successfully, there should be a dialog box shown. -->
 <div class="dialog-container" *ngIf="showDialog">
   <div class="dialog-box">
     <h2>Order Placed!</h2>
@@ -37,4 +34,110 @@
     <button class="close-button" (click)="closeDialog()">Close</button>
   </div>
 </div>
+-->
 
+<section class="os">
+  <!-- Background -->
+  <div class="os__bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="os__container">
+    <div class="os-card">
+      <header class="os-head">
+        <div>
+          <div class="os-badge">Foodeli</div>
+          <h1 class="os-title">Order Summary</h1>
+          <p class="os-subtitle">Review your items before placing the order ✨</p>
+        </div>
+
+        <div class="os-total">
+          <span class="os-total__label">Total</span>
+          <span class="os-total__value">&#36; {{ total }}</span>
+        </div>
+      </header>
+
+      <div class="os-divider"></div>
+
+      <!-- Empty state -->
+      <div class="os-empty" *ngIf="(obj.foodItemsList?.length ?? 0) === 0">
+        <h3>No items yet</h3>
+        <p>Add items from the menu to see them here.</p>
+      </div>
+
+      <!-- Table -->
+      <div class="os-tablewrap" *ngIf="(obj.foodItemsList?.length ?? 0) > 0">
+        <table class="os-table">
+          <thead>
+            <tr>
+              <th class="col-item">Item</th>
+              <th class="col-qty">Quantity</th>
+              <th class="col-price">Price</th>
+              <th class="col-sub">Subtotal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of obj.foodItemsList">
+              <td class="cell-item">
+                <span class="item-name">{{ item.itemName }}</span>
+              </td>
+
+              <td class="cell-qty">
+                <span class="qty-pill">{{ item.quantity }}</span>
+              </td>
+
+              <td class="cell-price">
+                &#36; {{ item.price }}
+              </td>
+
+              <td class="cell-sub">
+                &#36; {{ (item.price * item.quantity) | number:'1.2-2' }}
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="3" class="tfoot-label">Total</td>
+              <td class="tfoot-value">&#36; {{ total }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <!-- Actions -->
+      <div class="os-actions">
+        <button class="os-btn os-btn--ghost"
+                type="button"
+                (click)="goBackToMenu()">
+          <span class="os-btn__text">← Back to Menu</span>
+        </button>
+
+        <button class="os-btn"
+                type="button"
+                [disabled]="(obj.foodItemsList?.length ?? 0) === 0"
+                (click)="saveOrder()">
+          <span class="os-btn__text">Place Order</span>
+          <span class="os-btn__shine" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog -->
+  <div class="os-dialog" *ngIf="showDialog" role="dialog" aria-modal="true">
+    <div class="os-dialog__box">
+      <h2>Order Placed!</h2>
+      <p>Your order has been successfully placed.</p>
+      <button class="os-btn os-btn--ghost" type="button" (click)="closeDialog()">
+        <span class="os-btn__text">Close</span>
+      </button>
+    </div>
+  </div>
+</section>

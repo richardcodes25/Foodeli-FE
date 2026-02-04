@@ -8,5 +8,6 @@ export interface FoodItem {
   price?: number;
   restaurantId?: number;
   quantity?: number;
+  selectedQty?: number;
 
 }

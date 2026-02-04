@@ -86,12 +86,18 @@
             </p>
           </div>
 
-          <!-- Checkout button (still visible even if food list loading) -->
-          <button class="fc-btn" (click)="onCheckOut()">
-            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-            <span class="fc-btn__text">Checkout</span>
-            <span class="fc-btn__shine" aria-hidden="true"></span>
-          </button>
+          <div class="fc-actions">
+            <button class="fc-btn fc-btn--ghost" type="button" (click)="clearCart()">
+              <i class="fas fa-rotate-left" aria-hidden="true"></i>
+              <span class="fc-btn__text">Clear</span>
+            </button>
+
+            <button class="fc-btn" type="button" (click)="onCheckOut()">
+              <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+              <span class="fc-btn__text">Checkout</span>
+              <span class="fc-btn__shine" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
       </ng-template>
 
@@ -152,7 +158,7 @@
             <div class="food-quantity">
               <button
                 class="qty-btn qty-btn--minus"
-                *ngIf="food.quantity > 0"
+                *ngIf="food.selectedQty > 0"
                 (click)="decrement(food)"
                 aria-label="Decrease quantity"
               >
@@ -160,7 +166,7 @@
               </button>
 
               <div class="quantity-label" aria-label="Selected quantity">
-                {{ food.quantity }}
+                {{ food.selectedQty }}
               </div>
 
               <button
