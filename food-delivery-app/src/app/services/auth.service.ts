@@ -73,4 +73,13 @@ export class AuthService {
   async currentUser(): Promise<User | null> {
     return await firstValueFrom(this.user$);
   }
+
+    /**
+   * Check if user is currently logged in (Firebase auth state)
+   * Safe to use before protected actions (Place Order, etc.)
+   */
+  async isLoggedIn(): Promise<boolean> {
+    const u = await firstValueFrom(this.user$);
+    return !!u;
+  }
 }

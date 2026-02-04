@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../service/order.service';
 import { OrderDTO } from '../models/OrderDTO';
 import { Title } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-order-summary',
@@ -25,9 +27,17 @@ export class OrderSummaryComponent {
   obj: any;
   total: any;
   showDialog: boolean = false;
+  private readonly PENDING_ORDER_KEY = 'foodeli_pending_order_v1';
+
 
   // route: ActivatedRoute => fetch the complete data and save it to local variable.
-  constructor(private route: ActivatedRoute, private router: Router, private orderService: OrderService, private titleService: Title) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private orderService: OrderService,
+    private titleService: Title,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     // Set title
@@ -52,17 +62,45 @@ export class OrderSummaryComponent {
     }, 0)
   }
 
-  saveOrder() {
-    this.orderService.saveOrder(this.orderSummary)
-      .subscribe(
-        response => {
-          this.showDialog = true;
-          // After setting showDialog to be true, the successful dialog box will be shown
-        },
-        error => {
-          console.error("Failed to save data:", error);
-        }
-      )
+  async saveOrder() {
+    const loggedIn = await this.authService.isLoggedIn();
+
+    if (loggedIn) {
+      this.orderService.saveOrder(this.orderSummary)
+        .subscribe(
+          response => {
+            this.showDialog = true;
+            // After setting showDialog to be true, the successful dialog box will be shown
+          },
+          error => {
+            console.error("Failed to save data:", error);
+          }
+        )
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: 'Log in required',
+      text: 'Please log in to place your order.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Log in',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+      background: 'rgba(255,255,255,0.10)',
+      color: '#f8fafc',
+      backdrop: 'rgba(0,0,0,0.55)',
+    });
+
+    if (result.isConfirmed) {
+      // Save order so user doesn’t lose it
+      this.savePendingOrderToLocalStorage();
+
+      // Go to login
+      this.router.navigate(['/auth/login'], {
+        queryParams: { redirect: 'orderSummary' } // optional
+      });
+    }
   }
 
   closeDialog() {
@@ -71,11 +109,30 @@ export class OrderSummaryComponent {
   }
 
   goBackToMenu() {
-    const restaurantId = this.obj?.restaurant?.id;
-    if (!restaurantId) return;
+      const restaurantId = this.obj?.restaurant?.id;
+      if (!restaurantId) return;
 
-    this.router.navigate(['/food-catalogue', restaurantId]);
+      this.router.navigate(['/food-catalogue', restaurantId]);
+    }
+
+    private savePendingOrderToLocalStorage() {
+    localStorage.setItem(this.PENDING_ORDER_KEY, JSON.stringify(this.obj));
   }
+
+  private loadPendingOrderFromLocalStorage() {
+    const raw = localStorage.getItem(this.PENDING_ORDER_KEY);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  private clearPendingOrderFromLocalStorage() {
+    localStorage.removeItem(this.PENDING_ORDER_KEY);
+  }
+
 
 
 }
