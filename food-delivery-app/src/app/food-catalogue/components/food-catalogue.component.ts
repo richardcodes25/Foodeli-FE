@@ -102,7 +102,7 @@ export class FoodCatalogueComponent {
 
     this.foodItemService.getFoodItemsByRestaurantId(restaurantId)
       .pipe(
-        timeout(5000),
+        timeout(9000),
         catchError((err: unknown) => {
           const http = err as HttpErrorResponse;
           const isTimeout = err instanceof TimeoutError || (err as any)?.name === 'TimeoutError';

@@ -1,5 +1,4 @@
 <section class="auth">
-  <!-- animated background -->
   <div class="auth__bg" aria-hidden="true">
     <span class="blob blob--1"></span>
     <span class="blob blob--2"></span>
@@ -15,24 +14,47 @@
     </header>
 
     <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- Username (backend userName) -->
       <label class="field">
-        <span class="field__label">Display name</span>
+        <span class="field__label">Username *</span>
         <div class="field__control">
           <span class="field__icon" aria-hidden="true">✦</span>
           <input
             class="field__input"
-            formControlName="displayName"
+            formControlName="userName"
             type="text"
-            placeholder="Your name"
+            placeholder="richarddo"
+            autocomplete="username"
+          />
+        </div>
+
+        <small class="field__error"
+          *ngIf="form.get('userName')?.invalid && form.get('userName')?.touched">
+          Username is required (min 3 characters)
+        </small>
+      </label>
+
+      <!-- Full name (backend fullName) -->
+      <label class="field">
+        <span class="field__label">Full name</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✷</span>
+          <input
+            class="field__input"
+            formControlName="fullName"
+            type="text"
+            placeholder="Thanh Nguyen Do"
             autocomplete="name"
           />
         </div>
       </label>
 
+      <!-- Email -->
       <label class="field">
         <span class="field__label">Email</span>
         <div class="field__control">
-          <span class="field__icon" aria-hidden="true">✷</span>
+          <span class="field__icon" aria-hidden="true">✸</span>
           <input
             class="field__input"
             formControlName="email"
@@ -41,12 +63,113 @@
             autocomplete="email"
           />
         </div>
+
+        <small class="field__error"
+          *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+          Please enter a valid email address
+        </small>
       </label>
 
+      <!-- Phone -->
       <label class="field">
-        <span class="field__label">Password</span>
+        <span class="field__label">Phone (optional)</span>
         <div class="field__control">
-          <span class="field__icon" aria-hidden="true">✸</span>
+          <span class="field__icon" aria-hidden="true">✹</span>
+          <input
+            class="field__input"
+            formControlName="phone"
+            type="tel"
+            placeholder="(817) 123-4567"
+            autocomplete="tel"
+          />
+        </div>
+      </label>
+
+      <!-- City -->
+      <label class="field">
+        <span class="field__label">City</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">⌂</span>
+          <input
+            class="field__input"
+            formControlName="city"
+            type="text"
+            placeholder="Fort Worth"
+            autocomplete="address-level2"
+          />
+        </div>
+
+        <small class="field__error"
+          *ngIf="form.get('city')?.invalid && form.get('city')?.touched">
+          City is required
+        </small>
+      </label>
+
+      <!-- Address -->
+      <label class="field">
+        <span class="field__label">Address</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">⌁</span>
+          <input
+            class="field__input"
+            formControlName="address"
+            type="text"
+            placeholder="123 Main St"
+            autocomplete="street-address"
+          />
+        </div>
+
+        <small class="field__error"
+          *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+          Address is required
+        </small>
+      </label>
+
+      <!-- Preferred language -->
+      <label class="field">
+        <span class="field__label">Preferred language</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">⌘</span>
+          <select class="field__input" formControlName="preferred_language">
+            <option value="en">English (en)</option>
+            <option value="vi">Vietnamese (vi)</option>
+          </select>
+        </div>
+      </label>
+
+      <!-- Optional: avatar -->
+      <label class="field">
+        <span class="field__label">Avatar URL (optional)</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">☾</span>
+          <input
+            class="field__input"
+            formControlName="avatarUrl"
+            type="url"
+            placeholder="https://..."
+          />
+        </div>
+      </label>
+
+      <!-- Optional: bio -->
+      <label class="field">
+        <span class="field__label">Bio (optional)</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">✎</span>
+          <textarea
+            class="field__input"
+            formControlName="bio"
+            rows="2"
+            placeholder="Building Foodeli 🚀"
+          ></textarea>
+        </div>
+      </label>
+
+      <!-- Password (Firebase Auth only) -->
+      <label class="field">
+        <span class="field__label">Password *</span>
+        <div class="field__control">
+          <span class="field__icon" aria-hidden="true">🔒</span>
           <input
             class="field__input"
             formControlName="password"
@@ -55,9 +178,13 @@
             autocomplete="new-password"
           />
         </div>
+
+        <small class="field__error"
+          *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+          Password must be at least 6 characters
+        </small>
       </label>
 
-      <!-- helper row -->
       <div class="auth__row">
         <a class="link link--small" routerLink="/login" (click)="backToLogin()">
           Already have an account? <span class="link__strong">Log in</span>
@@ -69,14 +196,8 @@
         <span class="btn__shine" aria-hidden="true"></span>
       </button>
 
-      <!-- feedback -->
-      <p class="auth__success" *ngIf="success" role="status">
-        {{ success }}
-      </p>
-
-      <p class="auth__error" *ngIf="error" role="alert">
-        {{ error }}
-      </p>
+      <p class="auth__success" *ngIf="success" role="status">{{ success }}</p>
+      <p class="auth__error" *ngIf="error" role="alert">{{ error }}</p>
     </form>
   </div>
 </section>

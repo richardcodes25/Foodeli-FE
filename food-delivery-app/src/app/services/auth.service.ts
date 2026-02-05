@@ -39,30 +39,84 @@ export class AuthService {
   );
 
   async signUpEmail(email: string, password: string, displayName?: string) {
-    const cred = await createUserWithEmailAndPassword(this.auth, email, password);
-    if (displayName) {
-      await updateProfile(cred.user, { displayName });
-    }
-    // Create profile doc on first sign up
-    const ref = doc(this.db, 'users', cred.user.uid);
-    await setDoc(ref, {
-      uid: cred.user.uid,
-      email: cred.user.email,
-      displayName: cred.user.displayName ?? null,
-      photoURL: cred.user.photoURL ?? null,
-      createdAt: serverTimestamp(),
-      lastLoginAt: serverTimestamp()
-    } as AppUser);
-    return cred.user;
+
+      // console.log('Starting signup');
+      const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+      console.log('Auth created', cred.user);
+
+      if (displayName) {
+        await updateProfile(cred.user, { displayName });
+        // console.log('Profile updated');
+      }
+      // Create profile doc on first sign up
+      const ref = doc(this.db, 'users', cred.user.uid);
+      // console.log('Writing Firestore doc');
+
+      try {
+        // console.log('[signup] writing Firestore user doc...');
+        setDoc(ref, {
+        // await setDoc(ref, {
+          uid: cred.user.uid,
+          email: cred.user.email,
+          createdAt: serverTimestamp(),
+        });
+        // console.log('[signup] Firestore write success ✅');
+      } catch (e) {
+        console.error('signUpEmail failed:', e);
+        throw e; // rethrow so UI can show message
+      }
+
+      return cred.user;
   }
 
   async signInEmail(email: string, password: string) {
-    const cred = await signInWithEmailAndPassword(this.auth, email, password);
-    // Update lastLoginAt on successful sign in
-    await updateDoc(doc(this.db, 'users', cred.user.uid), {
-      lastLoginAt: serverTimestamp()
-    });
-    return cred.user;
+      console.log('[Auth] Attempting sign in...');
+      console.log('[Auth] Email:', email);
+      console.log('[Auth] Password:', password);
+      console.log("[Auth] Auth token", this.auth);
+    try {
+      const cred = await signInWithEmailAndPassword(this.auth, email, password);
+      console.log("User signed in:", cred.user);
+
+      console.log('[Auth] ✅ signInWithEmailAndPassword SUCCESS');
+      console.log('[Auth] Firebase User:', cred.user);
+      console.log('[Auth] UID:', cred.user.uid);
+      console.log('[Auth] Email verified:', cred.user.emailVerified);
+
+      // Update lastLoginAt on successful sign in
+      // await updateDoc(doc(this.db, 'users', cred.user.uid), {
+      //   lastLoginAt: serverTimestamp()
+      // });
+
+      // Non-blocking update (won't delay navigation/UI)
+      updateDoc(doc(this.db, 'users', cred.user.uid), {
+        lastLoginAt: serverTimestamp()
+      }).then(() => {
+        console.log('[Auth] lastLoginAt updated');
+      }).catch(err => {
+        console.warn('[Auth] lastLoginAt update failed (ignored):', err);
+      });
+
+      console.log('[Auth] ✅ Firestore lastLoginAt updated');
+
+      return cred.user;
+    } catch (e: any) {
+
+      console.error('[Auth] ❌ signInWithEmailAndPassword FAILED');
+      console.error('[Auth] Error object:', e);
+      console.error('[Auth] Error code:', e?.code);
+      console.error('[Auth] Error message:', e?.message);
+      // Firebase error code is what matters (auth/xxx)
+      console.error('Firebase signIn error:', e);
+
+      const code = e?.code;
+      const message = e?.message;
+
+      console.error('code:', code, 'message:', message);
+
+      // optional: rethrow a friendly message for UI
+      throw e;
+    }
   }
 
   async logout() {

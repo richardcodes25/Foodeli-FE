@@ -1,0 +1,194 @@
+<div class="profile-page">
+  <!-- Optional animated layers -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="blob blob-1" aria-hidden="true"></div>
+  <div class="blob blob-2" aria-hidden="true"></div>
+  <div class="blob blob-3" aria-hidden="true"></div>
+
+  <div class="container">
+    <!-- Header Card -->
+    <section class="card card-premium profile-hero">
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <img [src]="user.avatarUrl" alt="Profile avatar" />
+        </div>
+        <span class="status-pill" [class.ok]="user.isActive">
+          <span class="dot"></span>
+          {{ user.isActive ? 'Active' : 'Offline' }}
+        </span>
+      </div>
+
+      <div class="hero-main">
+        <h1 class="title">
+          {{ user.fullName }}
+          <span class="handle">{{ user.username }}</span>
+        </h1>
+
+        <p class="subtitle">{{ user.bio }}</p>
+
+        <div class="meta">
+          <div class="meta-item">
+            <span class="k">Email</span>
+            <span class="v">{{ user.email }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="k">Phone</span>
+            <span class="v">{{ user.phone }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="k">City</span>
+            <span class="v">{{ user.city }}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" (click)="onEditProfile()">Edit Profile</button>
+          <button class="btn-ghost" (click)="onChangePassword()">Change Password</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid: left = details, right = stats -->
+    <div class="grid">
+      <!-- Details -->
+      <section class="card card-premium">
+        <h2 class="section-title">Profile Details</h2>
+
+        <form class="form" (ngSubmit)="onSave()" #f="ngForm">
+          <div class="row">
+            <div class="field">
+              <label>Full Name</label>
+              <input
+                name="fullName"
+                [(ngModel)]="draft.fullName"
+                type="text"
+                required
+                class="input"
+                placeholder="Your full name"
+              />
+            </div>
+
+            <div class="field">
+              <label>Username</label>
+              <input
+                name="username"
+                [(ngModel)]="draft.username"
+                type="text"
+                required
+                class="input"
+                placeholder="yourname"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Email</label>
+              <input
+                name="email"
+                [(ngModel)]="draft.email"
+                type="email"
+                required
+                class="input"
+                placeholder="you@email.com"
+              />
+            </div>
+
+            <div class="field">
+              <label>Phone</label>
+              <input
+                name="phone"
+                [(ngModel)]="draft.phone"
+                type="tel"
+                class="input"
+                placeholder="(xxx) xxx-xxxx"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>City</label>
+              <input
+                name="city"
+                [(ngModel)]="draft.city"
+                type="text"
+                class="input"
+                placeholder="Fort Worth"
+              />
+            </div>
+<!--
+            <div class="field">
+              <label>Avatar URL</label>
+              <input
+                name="avatarUrl"
+                [(ngModel)]="draft.avatarUrl"
+                type="url"
+                class="input"
+                placeholder="https://..."
+              />
+            </div> -->
+          </div>
+
+          <div class="field">
+            <label>Bio</label>
+            <textarea
+              name="bio"
+              [(ngModel)]="draft.bio"
+              rows="3"
+              class="input textarea"
+              placeholder="A short bio..."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-primary" type="submit" [disabled]="!f.valid || saving">
+              <span *ngIf="!saving">Save Changes</span>
+              <span *ngIf="saving" class="saving">
+                Saving <span class="dots"><i></i><i></i><i></i></span>
+              </span>
+            </button>
+            <button class="btn-ghost" type="button" (click)="onReset()" [disabled]="saving">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Stats -->
+      <aside class="card card-premium stats">
+        <h2 class="section-title">Foodeli Stats</h2>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-num">{{ stats.totalOrders }}</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">{{ stats.favoriteRestaurants }}</div>
+            <div class="stat-label">Favorites</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">{{ stats.savedAddresses }}</div>
+            <div class="stat-label">Addresses</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">{{ stats.rewardPoints }}</div>
+            <div class="stat-label">Reward Points</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="mini-title">Recent Activity</h3>
+        <ul class="activity">
+          <li *ngFor="let item of recentActivity">
+            <span class="badge">{{ item.type }}</span>
+            <div class="activity-text">
+              <div class="activity-title">{{ item.title }}</div>
+              <div class="activity-sub">{{ item.when }}</div>
+            </div>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</div>

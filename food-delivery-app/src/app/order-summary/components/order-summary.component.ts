@@ -5,6 +5,8 @@ import { OrderDTO } from '../models/OrderDTO';
 import { Title } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { SessionService } from '../../services/session/session.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-summary',
@@ -36,7 +38,8 @@ export class OrderSummaryComponent {
     private router: Router,
     private orderService: OrderService,
     private titleService: Title,
-    private authService: AuthService
+    private authService: AuthService,
+    private session: SessionService
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +54,7 @@ export class OrderSummaryComponent {
     // data consists of foodItemList and restaurant details
     // Parse this data and save in obj variable, set userID as 1, add it to order
     this.obj = JSON.parse(data);
-    this.obj.userId = 1;
+    this.obj.userId = null;
     this.orderSummary = this.obj;
 
     // Calculate the total of the bill from the restaurant.
@@ -63,12 +66,34 @@ export class OrderSummaryComponent {
   }
 
   async saveOrder() {
-    const loggedIn = await this.authService.isLoggedIn();
+    // console.log("Order to be placed:", this.orderSummary);
+    // this.orderService.saveOrder(this.orderSummary)
+    //   .subscribe(
+    //     response => {
+    //       localStorage.removeItem(this.PENDING_ORDER_KEY);
+    //       this.showDialog = true;
+    //       // After setting showDialog to be true, the successful dialog box will be shown
+    //     },
+    //     error => {
+    //       console.error("Failed to save data:", error);
+    //     }
+    //   )
 
-    if (loggedIn) {
+    // const user$ = this.session.user$;
+    // const loggedIn  = user$.pipe(map(u => !!u));
+    // const loggedIn = this.session.isLoggedIn();
+    // console.log("Logged in?", loggedIn);
+
+
+    if (this.session.isLoggedIn) {
+      const userId = this.session.currentUser?.id || null;
+      console.log("Current user ID:", userId);
+      this.orderSummary!.userId = userId;
+
       this.orderService.saveOrder(this.orderSummary)
         .subscribe(
           response => {
+            localStorage.removeItem(this.PENDING_ORDER_KEY);
             this.showDialog = true;
             // After setting showDialog to be true, the successful dialog box will be shown
           },

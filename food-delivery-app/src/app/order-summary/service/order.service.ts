@@ -21,6 +21,7 @@ export class OrderService {
 
   // Save order to DB
   saveOrder(data: any): Observable<any> {
+    console.log("OrderService: Saving order", data);
     return this.http.post<any>(this.apiUrl, data);
   }
 

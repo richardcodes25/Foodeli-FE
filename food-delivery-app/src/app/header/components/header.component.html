@@ -34,19 +34,19 @@
 
     <!-- Right: Nav -->
     <nav class="fx-nav">
-      <ng-container *ngIf="isLoggedIn; else loggedOut">
-        <div class="fx-user">
+      <ng-container *ngIf="(isLoggedIn$ | async); else loggedOut">
+        <div class="fx-user" *ngIf="(user$ | async) as user">
           <div class="fx-user__avatar">
-            <img src="../../../assets/avatar-pics/avatar.jpg" alt="User Avatar" />
+            <img
+              [src]="user.avatarUrl || '../../../assets/avatar-pics/avatar.jpg'"
+              alt="User Avatar"
+            />
             <span class="fx-user__dot" aria-hidden="true"></span>
           </div>
 
           <div class="fx-user__meta">
             <span class="fx-user__hello">Welcome back</span>
-            <span class="fx-user__name">!</span>
-            <!-- If you have username later:
-            <span class="fx-user__name">{{ username }}</span>
-            -->
+            <span class="fx-user__name">{{ user.userName }}!</span>
           </div>
         </div>
       </ng-container>

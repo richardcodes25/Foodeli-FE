@@ -15,10 +15,15 @@ export class HomeComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.titleService.setTitle('Foodeli');
+    localStorage.clear();
   }
 
   exploreRestaurants() {
       this.router.navigate(['/restaurants']);
+  }
+
+  navigateProfile() {
+      this.router.navigate(['/profile']);
   }
 
 }
